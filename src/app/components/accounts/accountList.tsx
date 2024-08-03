@@ -4,15 +4,16 @@ import {accountService} from "@/services/account.service";
 import {Button, Table} from "antd"
 import {LoadingComponent} from "@/app/components/Loading";
 import AccountModal from "@/app/components/accounts/accountModal";
+import AccountFormModal from "@/app/components/accounts/accountForm";
 
 
 
 export function AuthorsListComponent() {
-    const [accounts, setAuthors] = useState<AccountInfo[]>([]);
+    const [accounts, setAccounts] = useState<AccountInfo[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [selectedAccount, setSelectedAccount] = useState<AccountInfo | null>(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    //const [showForm, setShowForm] = useState<boolean>(false);
+    const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
     const columns = [
         {
@@ -76,12 +77,22 @@ export function AuthorsListComponent() {
     const loadAuthors = async () => {
         try {
             const data = await accountService.getAllAccounts();
-            setAuthors(data);
+            setAccounts(data);
             setLoading(false);
         } catch (error) {
             console.error(error);
             setLoading(false);
         }
+    };
+    // todo handle error with toster and not close the model in case of error
+    const handleCreateAccount = async (newAccount: AccountInfo) => {
+        try {
+            const data = await accountService.createAccount(newAccount);
+            setAccounts((prevAccounts) => [...prevAccounts, data]);
+        } catch (error) {
+            console.error(error);
+        }
+
     };
 
     if (loading) {
@@ -92,11 +103,23 @@ export function AuthorsListComponent() {
     return (
         <div>
             <h1>Account List</h1>
+            <Button
+                type="primary"
+                onClick={() => setIsCreateModalVisible(true)}
+                style={{ marginBottom: '20px' }}
+            >
+                Create New Account
+            </Button>
             <Table dataSource={accounts} columns={columns} />
             <AccountModal
                 visible={isModalVisible}
                 onClose={handleCloseModal}
                 account={selectedAccount}
+            />
+            <AccountFormModal
+                visible={isCreateModalVisible}
+                onClose={() => setIsCreateModalVisible(false)}
+                onCreate={handleCreateAccount}
             />
         </div>
     );
