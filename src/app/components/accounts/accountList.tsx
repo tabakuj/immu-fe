@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {AccountInfo, AccountType} from "@/models/models";
 import {accountService} from "@/services/account.service";
-import {Button, Table} from "antd"
+import {Button, message, Space, Table} from "antd"
 import {LoadingComponent} from "@/app/components/Loading";
 import AccountModal from "@/app/components/accounts/accountModal";
 import AccountFormModal from "@/app/components/accounts/accountForm";
@@ -14,8 +14,17 @@ export function AuthorsListComponent() {
     const [selectedAccount, setSelectedAccount] = useState<AccountInfo | null>(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+    const [messageApi, contextHolder] = message.useMessage();
 
+    let counter:number = 1
     const columns = [
+        {
+            title: 'Nr',
+            dataIndex: 'Nr',
+            render: (_: any, record: AccountInfo) => (
+             <p>{counter++}</p>
+            ),
+        },
         {
             title: 'Account Number',
             dataIndex: 'account_number',
@@ -79,18 +88,18 @@ export function AuthorsListComponent() {
             const data = await accountService.getAllAccounts();
             setAccounts(data);
             setLoading(false);
-        } catch (error) {
-            console.error(error);
+        } catch (error:any) {
+            messageApi.error(error.message)
             setLoading(false);
         }
     };
-    // todo handle error with toster and not close the model in case of error
-    const handleCreateAccount = async (newAccount: AccountInfo) => {
+
+    const handleCreateAccount = async (newAccount: AccountInfo)=> {
         try {
             const data = await accountService.createAccount(newAccount);
             setAccounts((prevAccounts) => [...prevAccounts, data]);
         } catch (error) {
-            console.error(error);
+          throw error;
         }
 
     };
@@ -102,14 +111,17 @@ export function AuthorsListComponent() {
 
     return (
         <div>
-            <h1>Account List</h1>
-            <Button
-                type="primary"
-                onClick={() => setIsCreateModalVisible(true)}
-                style={{ marginBottom: '20px' }}
-            >
-                Create New Account
-            </Button>
+            {contextHolder}
+            <div className="flex justify-between w-full items-center mb-4">
+                <h1 className="text-3xl font-bold">Account List</h1>
+                <Button
+                    type="primary"
+                    onClick={() => setIsCreateModalVisible(true)}
+                >
+                    Create New Account
+                </Button>
+            </div>
+
             <Table dataSource={accounts} columns={columns} />
             <AccountModal
                 visible={isModalVisible}

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Modal, Form, Input, InputNumber, Select, Button } from 'antd';
+import React, {useState} from 'react';
+import {Modal, Form, Input, InputNumber, Select, Button, message} from 'antd';
 import {AccountInfo, AccountType} from "@/models/models";
 
 const { Option } = Select;
@@ -7,7 +7,7 @@ const { Option } = Select;
 interface CreateAccountModalProps {
     visible: boolean;
     onClose: () => void;
-    onCreate: (account: AccountInfo) => void;
+    onCreate: (account: AccountInfo) => Promise<void>;
 }
 
 const AccountFormModal: React.FC<CreateAccountModalProps> = ({
@@ -15,15 +15,23 @@ const AccountFormModal: React.FC<CreateAccountModalProps> = ({
                                                                    onClose,
                                                                    onCreate,
                                                                }) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [form] = Form.useForm();
 
     const handleSubmit = () => {
         form
             .validateFields()
-            .then((values) => {
-                form.resetFields();
-                onCreate(values as AccountInfo);
-                onClose();
+            .then( async (values) => {
+
+                try {
+                    await onCreate(values as AccountInfo);
+                    form.resetFields();
+                    onClose();
+                } catch (error:any) {
+                    console.log(error)
+                    messageApi.error(error.message);
+                }
+
             })
             .catch((info) => {
                 console.log('Validate Failed:', info);
@@ -45,6 +53,7 @@ const AccountFormModal: React.FC<CreateAccountModalProps> = ({
             ]}
         >
             <Form form={form} layout="vertical" name="create_account">
+                {contextHolder}
                 <Form.Item
                     label="Account Name"
                     name="account_name"
