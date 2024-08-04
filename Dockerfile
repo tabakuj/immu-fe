@@ -18,6 +18,5 @@ COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
 COPY --from=build /app/node_modules ./node_modules
 ENV NODE_ENV=production
-EXPOSE docker rm -f imu-fe
-       docker run -it -p 8081:3000 --name imu-fe immu-solution-fe
+EXPOSE 3000
 CMD ["npm", "start"]
