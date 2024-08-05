@@ -28,7 +28,7 @@ const AccountFormModal: React.FC<CreateAccountModalProps> = ({
                     form.resetFields();
                     onClose();
                 } catch (error:any) {
-                    console.log(error)
+                    //console.error(error)
                     messageApi.error(error.message);
                 }
 

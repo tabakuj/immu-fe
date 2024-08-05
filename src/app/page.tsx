@@ -1,6 +1,6 @@
 'use client'
 import styles from "./page.module.css";
-import {AuthorsListComponent} from "@/app/components/accounts/accountList";
+import {AuthorsListComponent} from "@/app/components/accounts/AccountList";
 
 export default function Home() {
   return (

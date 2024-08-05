@@ -2,9 +2,8 @@ import {useEffect, useState} from "react";
 import {AccountInfo, AccountType} from "@/models/models";
 import {accountService} from "@/services/account.service";
 import {Button, message, Space, Table} from "antd"
-import {LoadingComponent} from "@/app/components/Loading";
-import AccountModal from "@/app/components/accounts/accountModal";
-import AccountFormModal from "@/app/components/accounts/accountForm";
+import AccountModal from "@/app/components/accounts/AccountModal";
+import AccountFormModal from "@/app/components/accounts/AccountForm";
 
 
 
@@ -104,11 +103,6 @@ export function AuthorsListComponent() {
 
     };
 
-    if (loading) {
-        return <LoadingComponent/>;
-    }
-
-
     return (
         <div>
             {contextHolder}
@@ -122,7 +116,7 @@ export function AuthorsListComponent() {
                 </Button>
             </div>
 
-            <Table dataSource={accounts} columns={columns} />
+            <Table loading={loading} dataSource={accounts} columns={columns} />
             <AccountModal
                 visible={isModalVisible}
                 onClose={handleCloseModal}
