@@ -2,8 +2,8 @@ import {useEffect, useState} from "react";
 import {AccountInfo, AccountType} from "@/models/models";
 import {accountService} from "@/services/account.service";
 import {Button, message, Space, Table} from "antd"
-import AccountModal from "@/app/components/accounts/AccountModal";
-import AccountFormModal from "@/app/components/accounts/AccountForm";
+import AccountModalComponent from "@/app/components/accounts/AccountModal";
+import AccountFormComponent from "@/app/components/accounts/AccountForm";
 
 
 
@@ -117,12 +117,12 @@ export function AuthorsListComponent() {
             </div>
 
             <Table loading={loading} dataSource={accounts} columns={columns} />
-            <AccountModal
+            <AccountModalComponent
                 visible={isModalVisible}
                 onClose={handleCloseModal}
                 account={selectedAccount}
             />
-            <AccountFormModal
+            <AccountFormComponent
                 visible={isCreateModalVisible}
                 onClose={() => setIsCreateModalVisible(false)}
                 onCreate={handleCreateAccount}

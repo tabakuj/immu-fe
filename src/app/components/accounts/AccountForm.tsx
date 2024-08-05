@@ -10,7 +10,7 @@ interface CreateAccountModalProps {
     onCreate: (account: AccountInfo) => Promise<void>;
 }
 
-const AccountFormModal: React.FC<CreateAccountModalProps> = ({
+const AccountFormComponent: React.FC<CreateAccountModalProps> = ({
                                                                    visible,
                                                                    onClose,
                                                                    onCreate,
@@ -102,4 +102,4 @@ const AccountFormModal: React.FC<CreateAccountModalProps> = ({
     );
 };
 
-export default AccountFormModal;
+export default AccountFormComponent;

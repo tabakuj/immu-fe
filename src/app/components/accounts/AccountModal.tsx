@@ -10,7 +10,7 @@ interface AccountModalProps {
     account: AccountInfo | null;
 }
 
-const AccountModal: React.FC<AccountModalProps> = ({ visible, onClose, account }) => {
+const AccountModalComponent: React.FC<AccountModalProps> = ({ visible, onClose, account }) => {
     if (!account) return null;
 
     return (
@@ -44,4 +44,4 @@ const AccountModal: React.FC<AccountModalProps> = ({ visible, onClose, account }
     );
 };
 
-export default AccountModal;
+export default AccountModalComponent;
