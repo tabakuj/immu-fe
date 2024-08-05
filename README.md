@@ -48,5 +48,5 @@ The structure of the code is as follows: <br>
 
 > **Note** <br>
 > In the table, when you click "View Details," I haven't added the call to the backend since it is not needed at this moment.<br/>
-> Also, I have not used pagination since getting the total is a little bit tricky on the backend side of things. <br/>
+> Also, I have not used pagination since its a little tricky using Ant Desing Table. <br/>
 > If needed, let me know, and I can add these for sure. <br/>
